@@ -1,0 +1,82 @@
+<html>
+    <!--Aaron Jack https://www.youtube.com/watch?v=7FjhF6Hy9gY-->
+    <head>
+
+    </head>
+    <body>
+        <h1>
+            Dyner
+        </h1>
+        <h4>
+            Submit Url
+        </h4>
+        <input class="channel-input" type="text" placeholder="Put url here"/>
+        <button type="submit" onclick="submitChannel()">Submit</button>
+        <div class="container"></div>
+        <script>
+            function submitChannel() {
+                const channelURL = document.querySelector(".channel-input").value;
+                fetch('http://localhost:3000/recipes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({channelURL})
+                })
+            }
+            function newEl(type, attr={}){
+                const el = document.createElement(type);
+                for(let att in attr){
+                    const value = attr[att];
+                    if(att=='innerText') el.innerText = value;
+                    else el.setAttribute(att, value);
+                }
+                return el;
+            }
+
+            async function loadRecipes(){
+                const res = await fetch('http://localhost:3000/recipes');
+                const recipes = await res.json();
+
+                
+                const ctr = document.querySelector('.container');
+            
+                recipes.forEach(recipe=>{
+                    const card = newEl('div', {class: 'card'});
+                    const title = newEl('h4', {innerText: recipe.name});
+                    const img = newEl('img', {src: recipe.img});
+                    ctr.appendChild(title);
+                    ctr.appendChild(img);
+                    ctr.appendChild(card);
+                })
+
+            }
+            loadRecipes();
+
+
+            
+        </script>
+        <style>
+            .container{
+                display: flex;
+                background-color: #ffe4c4;
+            }
+            .card{
+                margin: 5px;
+                padding: 20px;
+                border: 1px solid #fff;
+            }
+        </style>
+    </body>
+
+<!-- Ania | https://www.youtube.com/watch?v=-3lqUHeZs_0
+    <head>
+        <script type="text/javascript" src="index.js"></script>
+    </head>
+    <form onsubmit="get_r()">
+        <label for="url">Enter url:</label> 
+        <input type="text" name="url" id="url" />
+        <input type="submit" />
+    </form>
+-->
+</html>
